@@ -41,7 +41,7 @@ internal class GildedRoseTest {
 
         app.updateQuality()
 
-        val actualItem = app.items.single()
+        val actualItem = app.items().single()
 
         assertEquals(expectedSellIn, actualItem.sellIn)
     }
@@ -61,7 +61,7 @@ internal class GildedRoseTest {
 
         app.updateQuality()
 
-        val actualItem = app.items.single()
+        val actualItem = app.items().single()
 
         assertEquals(expectedQuality, actualItem.quality)
     }
@@ -74,7 +74,7 @@ internal class GildedRoseTest {
         app.updateQuality()
 
         assertEquals(itemsThatGainValueOverTime.map { it.name }.toSet(), namesOfItemsThatGainValueOverTime)
-        app.items.forEach { item ->
+        app.items().forEach { item ->
             assertEquals(50, item.quality)
         }
     }
@@ -87,7 +87,7 @@ internal class GildedRoseTest {
         app.updateQuality()
 
         assertEquals(legendaryItems.map { it.name }.toSet(), namesOfLegendaryItems)
-        app.items.forEach { item ->
+        app.items().forEach { item ->
             assertEquals(51, item.quality)
         }
     }
@@ -99,7 +99,7 @@ internal class GildedRoseTest {
 
         app.updateQuality()
 
-        val actualItem = app.items.single()
+        val actualItem = app.items().single()
         assertEquals(11, actualItem.quality)
     }
 
@@ -111,7 +111,7 @@ internal class GildedRoseTest {
 
             app.updateQuality()
 
-            val actualItem = app.items.single()
+            val actualItem = app.items().single()
             assertEquals(12, actualItem.quality)
         }
     }
@@ -124,7 +124,7 @@ internal class GildedRoseTest {
 
             app.updateQuality()
 
-            val actualItem = app.items.single()
+            val actualItem = app.items().single()
             assertEquals(13, actualItem.quality)
         }
     }
@@ -136,7 +136,7 @@ internal class GildedRoseTest {
 
         app.updateQuality()
 
-        val actualItem = app.items.single()
+        val actualItem = app.items().single()
         assertEquals(0, actualItem.quality)
     }
 
