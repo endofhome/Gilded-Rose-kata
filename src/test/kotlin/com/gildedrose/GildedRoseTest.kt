@@ -68,6 +68,7 @@ internal class GildedRoseTest {
 
     @Test
     fun `the quality of an item never increases above 50`() {
+        // TODO try to get rid of this by using the type system - `ItemType` now tells us what kind of strategies are used for each type of item.
         val itemsThatGainValueOverTime = arrayOf(agedBrie(quality = 50), backstagePass(quality = 50))
         val app = GildedRose(itemsThatGainValueOverTime)
 
@@ -81,6 +82,7 @@ internal class GildedRoseTest {
 
     @Test
     fun `legendary items retain their quality no matter the value`() {
+        // TODO try to get rid of this by using the type system - `ItemType` now tells us what kind of strategies are used for each type of item.
         val legendaryItems = arrayOf(sulfuras(quality = 51))
         val app = GildedRose(legendaryItems)
 
@@ -93,7 +95,8 @@ internal class GildedRoseTest {
     }
 
     @Test
-    fun `backstage paseses increase in quality by 1 when there are 11 days before the concert`() {
+    fun `backstage passes increase in quality by 1 when there are 11 days before the concert`() {
+        // TODO try to get rid of this by using the type system - `ItemType` now tells us what kind of strategies are used for each type of item.
         val backstagePass = arrayOf(backstagePass(quality = 10))
         val app = GildedRose(backstagePass)
 
@@ -104,7 +107,8 @@ internal class GildedRoseTest {
     }
 
     @Test
-    fun `backstage paseses increase in quality by 2 when there are 10 days or less before the concert`() {
+    fun `backstage passes increase in quality by 2 when there are 10 days or less before the concert`() {
+        // TODO try to get rid of this by using the type system - `ItemType` now tells us what kind of strategies are used for each type of item.
         (6..10).forEach { sellIn ->
             val backstagePass = arrayOf(backstagePass(sellIn = sellIn, quality = 10))
             val app = GildedRose(backstagePass)
@@ -117,7 +121,8 @@ internal class GildedRoseTest {
     }
 
     @Test
-    fun `backstage paseses increase in quality by 3 when there are 5 days or less before the concert`() {
+    fun `backstage passes increase in quality by 3 when there are 5 days or less before the concert`() {
+        // TODO try to get rid of this by using the type system - `ItemType` now tells us what kind of strategies are used for each type of item.
         (1..5).forEach { sellIn ->
             val backstagePass = arrayOf(backstagePass(sellIn = sellIn, quality = 10))
             val app = GildedRose(backstagePass)
@@ -130,7 +135,8 @@ internal class GildedRoseTest {
     }
 
     @Test
-    fun `backstage paseses are worthless after the concert`() {
+    fun `backstage passes are worthless after the concert`() {
+        // TODO try to get rid of this by using the type system - `ItemType` now tells us what kind of strategies are used for each type of item.
         val backstagePass = arrayOf(backstagePass(sellIn = 0, quality = 10))
         val app = GildedRose(backstagePass)
 
@@ -140,6 +146,7 @@ internal class GildedRoseTest {
         assertEquals(0, actualItem.quality)
     }
 
+    // TODO try to get rid of this by using the type system - `ItemType` now tells us what kind of strategies are used for each type of item.
     private val namesOfLegendaryItems = setOf("Sulfuras, Hand of Ragnaros")
     private val namesOfItemsThatGainValueOverTime = setOf("Aged Brie", "Backstage passes to a TAFKAL80ETC concert")
 
