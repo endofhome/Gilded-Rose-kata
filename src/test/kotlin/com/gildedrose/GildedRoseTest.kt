@@ -34,9 +34,9 @@ internal class GildedRoseTest {
         val items = arrayOf(item)
         val app = GildedRose(items)
         // TODO The system behaviour would be more visible if each branch is extracted to its own test.
-        val expectedSellIn = when (item.name in namesOfLegendaryItems) {
-            true  -> item.sellIn
-            false -> max(item.sellIn - 1, 0)
+        val expectedSellIn = when (item.name) {
+            in namesOfLegendaryItems -> item.sellIn
+            else                     -> item.sellIn - 1
         }
 
         app.updateQuality()
