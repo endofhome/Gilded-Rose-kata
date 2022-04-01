@@ -52,7 +52,7 @@ internal class GildedRoseTest {
         val app = GildedRose(items)
         // TODO The system behaviour would be more visible if each branch is extracted to its own test.
         val expectedQuality = when {
-            item.name.startsWith("Conjured")               -> item.quality - 2
+            item.name.startsWith("Conjured")        -> item.quality - 2
             item.name in namesOfLegendaryItems             -> item.quality
             item.name in namesOfItemsThatGainValueOverTime -> item.quality + 1
             item.sellIn < 0                                -> item.quality - 2
