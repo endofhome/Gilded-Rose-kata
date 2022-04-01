@@ -5,7 +5,7 @@ class GildedRose(items: Array<Item>) {
 
     fun updateQuality() {
         selfUpdatingItems.mapIndexed { i, item ->
-            selfUpdatingItems[i] = item.updateQuality()
+            selfUpdatingItems[i] = item.update()
         }
     }
 
