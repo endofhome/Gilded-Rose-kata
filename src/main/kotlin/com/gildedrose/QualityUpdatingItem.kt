@@ -17,9 +17,9 @@ class QualityUpdatingItem(private val item: Item) {
 
 private fun qualityUpdateStrategyFor(item: Item): QualityUpdateStrategy =
     when (item.name) {
-        "+5 Dexterity Vest"                         -> DefaultQualityUpdateStrategy
-        "Aged Brie"                                 -> IncreasingOverTimeQualityUpdateStrategy
+        "+5 Dexterity Vest",
         "Elixir of the Mongoose"                    -> DefaultQualityUpdateStrategy
+        "Aged Brie"                                 -> IncreasingOverTimeQualityUpdateStrategy
         "Sulfuras, Hand of Ragnaros"                -> LegendaryQualityUpdateStrategy
         "Backstage passes to a TAFKAL80ETC concert" -> ConcertTicketQualityUpdateStrategy
         else                                        -> error("Unknown item")
