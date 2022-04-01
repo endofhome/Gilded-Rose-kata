@@ -38,17 +38,18 @@ object LegendaryQualityUpdateStrategy : QualityUpdateStrategy {
 }
 
 object IncreasingOverTimeQualityUpdateStrategy : QualityUpdateStrategy {
-    // TODO magic number 50
-    override fun newQuality(item: Item): Int = min(50, item.quality + 1)
+    override fun newQuality(item: Item): Int = increaseUpToDefaultMaxQuality(item.quality + 1)
 }
 
 object ConcertTicketQualityUpdateStrategy : QualityUpdateStrategy {
     override fun newQuality(item: Item): Int =
-            // TODO magic number 50
             when (item.sellIn) {
-                in 6..10 -> min(50, item.quality + 2)
-                in 1..5  -> min(50, item.quality + 3)
+                in 6..10 -> increaseUpToDefaultMaxQuality(item.quality + 2)
+                in 1..5  -> increaseUpToDefaultMaxQuality( item.quality + 3)
                 0        -> 0
-                else     -> min(50, item.quality + 1)
+                else     -> increaseUpToDefaultMaxQuality(item.quality + 1)
             }
 }
+
+private const val defaultMaxQuality = 50
+private fun increaseUpToDefaultMaxQuality(tryIncreaseTo: Int) = min(tryIncreaseTo, defaultMaxQuality)
