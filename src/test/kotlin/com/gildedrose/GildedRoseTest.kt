@@ -37,10 +37,11 @@ internal class GildedRoseTest {
         val items = arrayOf(item)
         val app = GildedRose(items)
         // TODO The system behaviour would be more visible if each branch is extracted to its own test.
-        val expectedSellIn = when (item.name) {
-            in namesOfLegendaryItems -> item.sellIn
-            else                     -> item.sellIn - 1
-        }
+        val expectedSellIn =
+            when {
+                item.isLegendary() -> item.sellIn
+                else               -> item.sellIn - 1
+            }
 
         app.updateQuality()
 
@@ -57,7 +58,7 @@ internal class GildedRoseTest {
         // TODO The system behaviour would be more visible if each branch is extracted to its own test.
         val expectedQuality = when {
             item.name.startsWith("Conjured")        -> item.quality - 2
-            item.name in namesOfLegendaryItems             -> item.quality
+            item.isLegendary()                             -> item.quality
             item.sellIn < 0                                -> item.quality - 2
             item.increasesInValueOverTime()                -> item.quality + 1
             else                                           -> max(item.quality - 1, 0)
@@ -91,17 +92,22 @@ internal class GildedRoseTest {
 
     @Test
     fun `legendary items retain their quality no matter the value`() {
-        // TODO try to get rid of this by using the type system - `ItemType` now tells us what kind of strategies are used for each type of item.
-        val legendaryItems = arrayOf(sulfuras(quality = 51))
+        val legendaryItems = allItems
+            .filter { item -> item.isLegendary() }
+            .map { Item(it.name, it.sellIn, 51) }
+            .toTypedArray()
+
         val app = GildedRose(legendaryItems)
 
         app.updateQuality()
 
-        assertEquals(legendaryItems.map { it.name }.toSet(), namesOfLegendaryItems)
         app.items().forEach { item ->
             assertEquals(51, item.quality)
         }
     }
+
+    private fun Item.isLegendary() =
+        itemTypeFor(name) is LegendaryItemType
 
     @Test
     fun `backstage passes increase in quality by 1 when there are 11 days before the concert`() {
@@ -155,11 +161,7 @@ internal class GildedRoseTest {
         assertEquals(0, actualItem.quality)
     }
 
-    // TODO try to get rid of this by using the type system - `ItemType` now tells us what kind of strategies are used for each type of item.
-    private val namesOfLegendaryItems = setOf("Sulfuras, Hand of Ragnaros")
-
     private fun backstagePass(sellIn: Int = 20, quality: Int): Item = Item("Backstage passes to a TAFKAL80ETC concert", sellIn, quality)
-    private fun sulfuras(quality: Int): Item = Item("Sulfuras, Hand of Ragnaros", 10, quality)
 }
 
 
