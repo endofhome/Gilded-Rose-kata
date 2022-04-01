@@ -8,7 +8,7 @@ data class DefaultItemType(private val qualityDegradationFactor: QualityDegradat
 )
 
 object AgedBrieItemType : ItemType(
-    qualityUpdateStrategy = IncreasingOverTimeQualityUpdateStrategy,
+    qualityUpdateStrategy = IncreasingSteadilyOverTimeQualityUpdateStrategy,
     sellInUpdateStrategy = DefaultSellInUpdateStrategy
 )
 

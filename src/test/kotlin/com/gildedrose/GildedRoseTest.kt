@@ -12,23 +12,27 @@ import java.util.stream.Stream
 internal class GildedRoseTest {
 
     companion object {
+        private val allItems = listOf(
+            Item("+5 Dexterity Vest", 10, 20),
+            Item("Aged Brie", 2, 0),
+            Item("Elixir of the Mongoose", 5, 7),
+            Item("Sulfuras, Hand of Ragnaros", 0, 80),
+            Item("Sulfuras, Hand of Ragnaros", -1, 80),
+            Item("Backstage passes to a TAFKAL80ETC concert", 15, 20),
+            Item("Backstage passes to a TAFKAL80ETC concert", 10, 49),
+            Item("Backstage passes to a TAFKAL80ETC concert", 5, 49),
+            Item("Conjured Mana Cake", 3, 6)
+        )
+
         @JvmStatic
-        fun allItems(): Stream<Arguments?>? =
+        fun allItemsAsArguments(): Stream<Arguments?>? =
             Stream.of(
-                Arguments.of(Item("+5 Dexterity Vest", 10, 20)),
-                Arguments.of(Item("Aged Brie", 2, 0)),
-                Arguments.of(Item("Elixir of the Mongoose", 5, 7)),
-                Arguments.of(Item("Sulfuras, Hand of Ragnaros", 0, 80)),
-                Arguments.of(Item("Sulfuras, Hand of Ragnaros", -1, 80)),
-                Arguments.of(Item("Backstage passes to a TAFKAL80ETC concert", 15, 20)),
-                Arguments.of(Item("Backstage passes to a TAFKAL80ETC concert", 10, 49)),
-                Arguments.of(Item("Backstage passes to a TAFKAL80ETC concert", 5, 49)),
-                Arguments.of(Item("Conjured Mana Cake", 3, 6)),
+                *allItems.map { Arguments.of(it) }.toTypedArray()
             )
     }
 
     @ParameterizedTest
-    @MethodSource("allItems")
+    @MethodSource("allItemsAsArguments")
     fun `number of days to sell item reduces appropriately when updating quality`(item: Item) {
         val items = arrayOf(item)
         val app = GildedRose(items)
@@ -46,16 +50,16 @@ internal class GildedRoseTest {
     }
 
     @ParameterizedTest
-    @MethodSource("allItems")
-    fun `item quality reduces appropriately when updating quality`(item: Item) {
+    @MethodSource("allItemsAsArguments")
+    fun `item quality is adjusted appropriately when updating quality`(item: Item) {
         val items = arrayOf(item)
         val app = GildedRose(items)
         // TODO The system behaviour would be more visible if each branch is extracted to its own test.
         val expectedQuality = when {
             item.name.startsWith("Conjured")        -> item.quality - 2
             item.name in namesOfLegendaryItems             -> item.quality
-            item.name in namesOfItemsThatGainValueOverTime -> item.quality + 1
             item.sellIn < 0                                -> item.quality - 2
+            item.increasesInValueOverTime()                -> item.quality + 1
             else                                           -> max(item.quality - 1, 0)
         }
 
@@ -68,17 +72,22 @@ internal class GildedRoseTest {
 
     @Test
     fun `the quality of an item never increases above 50`() {
-        // TODO try to get rid of this by using the type system - `ItemType` now tells us what kind of strategies are used for each type of item.
-        val itemsThatGainValueOverTime = arrayOf(agedBrie(quality = 50), backstagePass(quality = 50))
-        val app = GildedRose(itemsThatGainValueOverTime)
+        val itemsThatIncreaseInValueOverTime = allItems
+            .filter { item -> item.increasesInValueOverTime() }
+            .map { Item(it.name, it.sellIn, 50) }
+            .toTypedArray()
+
+        val app = GildedRose(itemsThatIncreaseInValueOverTime)
 
         app.updateQuality()
 
-        assertEquals(itemsThatGainValueOverTime.map { it.name }.toSet(), namesOfItemsThatGainValueOverTime)
         app.items().forEach { item ->
             assertEquals(50, item.quality)
         }
     }
+
+    private fun Item.increasesInValueOverTime() =
+        itemTypeFor(name).qualityUpdateStrategy is IncreasingOverTimeQualityUpdateStrategy
 
     @Test
     fun `legendary items retain their quality no matter the value`() {
@@ -148,9 +157,7 @@ internal class GildedRoseTest {
 
     // TODO try to get rid of this by using the type system - `ItemType` now tells us what kind of strategies are used for each type of item.
     private val namesOfLegendaryItems = setOf("Sulfuras, Hand of Ragnaros")
-    private val namesOfItemsThatGainValueOverTime = setOf("Aged Brie", "Backstage passes to a TAFKAL80ETC concert")
 
-    private fun agedBrie(quality: Int): Item = Item("Aged Brie", 20, quality)
     private fun backstagePass(sellIn: Int = 20, quality: Int): Item = Item("Backstage passes to a TAFKAL80ETC concert", sellIn, quality)
     private fun sulfuras(quality: Int): Item = Item("Sulfuras, Hand of Ragnaros", 10, quality)
 }

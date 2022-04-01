@@ -12,11 +12,12 @@ object LegendaryQualityUpdateStrategy : QualityUpdateStrategy {
     override fun newQuality(item: Item): Int = item.quality
 }
 
-object IncreasingOverTimeQualityUpdateStrategy : QualityUpdateStrategy {
+sealed interface IncreasingOverTimeQualityUpdateStrategy : QualityUpdateStrategy
+object IncreasingSteadilyOverTimeQualityUpdateStrategy : IncreasingOverTimeQualityUpdateStrategy {
     override fun newQuality(item: Item): Int = increaseUpToDefaultMaxQuality(item.quality + 1)
 }
 
-object ConcertTicketQualityUpdateStrategy : QualityUpdateStrategy {
+object ConcertTicketQualityUpdateStrategy : IncreasingOverTimeQualityUpdateStrategy {
     override fun newQuality(item: Item): Int =
             when (item.sellIn) {
                 in 6..10 -> increaseUpToDefaultMaxQuality(item.quality + 2)
