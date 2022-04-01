@@ -1,8 +1,5 @@
 package com.gildedrose
 
-import java.lang.Integer.max
-import java.lang.Integer.min
-
 class QualityUpdatingItem(private val item: Item) {
     val underlyingItem = Item(item.name, item.sellIn, item.quality)
     // TODO this still conflates updating `quality` and `sellIn`
@@ -24,32 +21,3 @@ private fun qualityUpdateStrategyFor(item: Item): QualityUpdateStrategy =
         "Backstage passes to a TAFKAL80ETC concert" -> ConcertTicketQualityUpdateStrategy
         else                                        -> error("Unknown item")
     }
-
-sealed interface QualityUpdateStrategy {
-    fun newQuality(item: Item): Int
-}
-
-object DefaultQualityUpdateStrategy : QualityUpdateStrategy {
-    override fun newQuality(item: Item): Int = max(0, item.quality - 1)
-}
-
-object LegendaryQualityUpdateStrategy : QualityUpdateStrategy {
-    override fun newQuality(item: Item): Int = item.quality
-}
-
-object IncreasingOverTimeQualityUpdateStrategy : QualityUpdateStrategy {
-    override fun newQuality(item: Item): Int = increaseUpToDefaultMaxQuality(item.quality + 1)
-}
-
-object ConcertTicketQualityUpdateStrategy : QualityUpdateStrategy {
-    override fun newQuality(item: Item): Int =
-            when (item.sellIn) {
-                in 6..10 -> increaseUpToDefaultMaxQuality(item.quality + 2)
-                in 1..5  -> increaseUpToDefaultMaxQuality( item.quality + 3)
-                0        -> 0
-                else     -> increaseUpToDefaultMaxQuality(item.quality + 1)
-            }
-}
-
-private const val defaultMaxQuality = 50
-private fun increaseUpToDefaultMaxQuality(tryIncreaseTo: Int) = min(tryIncreaseTo, defaultMaxQuality)
