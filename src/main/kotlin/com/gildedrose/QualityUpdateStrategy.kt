@@ -4,8 +4,8 @@ sealed interface QualityUpdateStrategy {
     fun newQuality(item: Item): Int
 }
 
-object DefaultQualityUpdateStrategy : QualityUpdateStrategy {
-    override fun newQuality(item: Item): Int = Integer.max(0, item.quality - 1)
+class DefaultQualityUpdateStrategy(private val qualityDegradationFactor: QualityDegradationFactor) : QualityUpdateStrategy {
+    override fun newQuality(item: Item): Int = Integer.max(0, item.quality - qualityDegradationFactor.value)
 }
 
 object LegendaryQualityUpdateStrategy : QualityUpdateStrategy {
@@ -24,6 +24,18 @@ object ConcertTicketQualityUpdateStrategy : QualityUpdateStrategy {
                 0        -> 0
                 else     -> increaseUpToDefaultMaxQuality(item.quality + 1)
             }
+}
+
+sealed interface QualityDegradationFactor {
+    val value: Int
+}
+
+object DefaultQualityDegradationFactor : QualityDegradationFactor {
+    override val value = 1
+}
+
+object ConjuredQualityDegradationFactor : QualityDegradationFactor {
+    override val value = 2
 }
 
 private const val defaultMaxQuality = 50

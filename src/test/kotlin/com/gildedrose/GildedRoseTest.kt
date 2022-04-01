@@ -23,8 +23,7 @@ internal class GildedRoseTest {
                 Arguments.of(Item("Backstage passes to a TAFKAL80ETC concert", 15, 20)),
                 Arguments.of(Item("Backstage passes to a TAFKAL80ETC concert", 10, 49)),
                 Arguments.of(Item("Backstage passes to a TAFKAL80ETC concert", 5, 49)),
-                // this conjured item does not work properly yet
-//                Item("Conjured Mana Cake", 3, 6)
+                Arguments.of(Item("Conjured Mana Cake", 3, 6)),
             )
     }
 
@@ -53,6 +52,7 @@ internal class GildedRoseTest {
         val app = GildedRose(items)
         // TODO The system behaviour would be more visible if each branch is extracted to its own test.
         val expectedQuality = when {
+            item.name.startsWith("Conjured")               -> item.quality - 2
             item.name in namesOfLegendaryItems             -> item.quality
             item.name in namesOfItemsThatGainValueOverTime -> item.quality + 1
             item.sellIn < 0                                -> item.quality - 2
