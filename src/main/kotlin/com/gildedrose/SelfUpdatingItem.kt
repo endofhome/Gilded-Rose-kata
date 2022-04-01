@@ -1,9 +1,9 @@
 package com.gildedrose
 
-class QualityUpdatingItem(private val item: Item) {
+class SelfUpdatingItem(private val item: Item) {
     val underlyingItem = Item(item.name, item.sellIn, item.quality)
     // TODO this still conflates updating `quality` and `sellIn`
-    fun updateQuality(): QualityUpdatingItem = QualityUpdatingItem(Item(item.name, updateSellIn(item.name), updateStrategy.newQuality(item)))
+    fun updateQuality(): SelfUpdatingItem = SelfUpdatingItem(Item(item.name, updateSellIn(item.name), updateStrategy.newQuality(item)))
 
     private val updateStrategy = qualityUpdateStrategyFor(item)
     private fun updateSellIn(itemName: String) =
