@@ -1,6 +1,7 @@
 package com.gildedrose
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -110,58 +111,75 @@ internal class GildedRoseTest {
         itemTypeFor(name) is LegendaryItemType
 
     @Test
-    fun `backstage passes increase in quality by 1 when there are 11 days before the concert`() {
-        // TODO try to get rid of this by using the type system - `ItemType` now tells us what kind of strategies are used for each type of item.
-        val backstagePass = arrayOf(backstagePass(quality = 10))
-        val app = GildedRose(backstagePass)
+    fun `concert tickets increase in quality by 1 when there are 11 days before the concert`() {
+        val concertTicketItems = allItems
+            .filter { item -> item.isConcertTicket() }
+            .map { Item(it.name, sellIn = 11, 10) }
+            .toTypedArray()
+
+        val app = GildedRose(concertTicketItems)
 
         app.updateQuality()
 
-        val actualItem = app.items().single()
-        assertEquals(11, actualItem.quality)
+        assertTrue(app.items().all { actualItem ->
+            actualItem.quality == 11
+        })
     }
 
     @Test
-    fun `backstage passes increase in quality by 2 when there are 10 days or less before the concert`() {
-        // TODO try to get rid of this by using the type system - `ItemType` now tells us what kind of strategies are used for each type of item.
+    fun `concert tickets increase in quality by 2 when there are 10 days or less before the concert`() {
         (6..10).forEach { sellIn ->
-            val backstagePass = arrayOf(backstagePass(sellIn = sellIn, quality = 10))
-            val app = GildedRose(backstagePass)
+            val concertTicketItems = allItems
+                .filter { item -> item.isConcertTicket() }
+                .map { Item(it.name, sellIn = sellIn, 10) }
+                .toTypedArray()
+
+            val app = GildedRose(concertTicketItems)
 
             app.updateQuality()
 
-            val actualItem = app.items().single()
-            assertEquals(12, actualItem.quality)
+            assertTrue(app.items().all { actualItem ->
+                actualItem.quality == 12
+            })
         }
     }
 
     @Test
-    fun `backstage passes increase in quality by 3 when there are 5 days or less before the concert`() {
-        // TODO try to get rid of this by using the type system - `ItemType` now tells us what kind of strategies are used for each type of item.
+    fun `concert tickets increase in quality by 3 when there are 5 days or less before the concert`() {
         (1..5).forEach { sellIn ->
-            val backstagePass = arrayOf(backstagePass(sellIn = sellIn, quality = 10))
-            val app = GildedRose(backstagePass)
+            val concertTicketItems = allItems
+                .filter { item -> item.isConcertTicket() }
+                .map { Item(it.name, sellIn = sellIn, 10) }
+                .toTypedArray()
+
+            val app = GildedRose(concertTicketItems)
 
             app.updateQuality()
 
-            val actualItem = app.items().single()
-            assertEquals(13, actualItem.quality)
+            assertTrue(app.items().all { actualItem ->
+                actualItem.quality == 13
+            })
         }
     }
 
     @Test
-    fun `backstage passes are worthless after the concert`() {
-        // TODO try to get rid of this by using the type system - `ItemType` now tells us what kind of strategies are used for each type of item.
-        val backstagePass = arrayOf(backstagePass(sellIn = 0, quality = 10))
-        val app = GildedRose(backstagePass)
+    fun `concert tickets are worthless after the concert`() {
+        val concertTicketItems = allItems
+            .filter { item -> item.isConcertTicket() }
+            .map { Item(it.name, sellIn = 0, 10) }
+            .toTypedArray()
+
+        val app = GildedRose(concertTicketItems)
 
         app.updateQuality()
 
-        val actualItem = app.items().single()
-        assertEquals(0, actualItem.quality)
+        assertTrue(app.items().all { actualItem ->
+            actualItem.quality == 0
+        })
     }
 
-    private fun backstagePass(sellIn: Int = 20, quality: Int): Item = Item("Backstage passes to a TAFKAL80ETC concert", sellIn, quality)
+    private fun Item.isConcertTicket() =
+            itemTypeFor(name) is ConcertTicketItemType
 }
 
 
