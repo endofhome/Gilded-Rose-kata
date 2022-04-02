@@ -36,16 +36,16 @@ internal class GildedRoseTest {
     @MethodSource("allItemsAsArguments")
     fun `number of days to sell item reduces appropriately when updating quality`(item: Item) {
         val items = arrayOf(item)
-        val app = GildedRose(items)
+        val gildedRose = GildedRose(items)
         val expectedSellIn =
             when {
                 item.isLegendary() -> item.sellIn
                 else               -> item.sellIn - 1
             }
 
-        app.updateQuality()
+        gildedRose.updateQuality()
 
-        val actualItem = app.items().single()
+        val actualItem = gildedRose.items().single()
 
         assertEquals(expectedSellIn, actualItem.sellIn)
     }
@@ -54,7 +54,7 @@ internal class GildedRoseTest {
     @MethodSource("allItemsAsArguments")
     fun `item quality is adjusted appropriately when updating quality`(item: Item) {
         val items = arrayOf(item)
-        val app = GildedRose(items)
+        val gildedRose = GildedRose(items)
 
         val expectedQuality = when {
             item.name.startsWith("Conjured")        -> item.quality - 2
@@ -64,9 +64,9 @@ internal class GildedRoseTest {
             else                                           -> max(item.quality - 1, 0)
         }
 
-        app.updateQuality()
+        gildedRose.updateQuality()
 
-        val actualItem = app.items().single()
+        val actualItem = gildedRose.items().single()
 
         assertEquals(expectedQuality, actualItem.quality)
     }
@@ -78,11 +78,11 @@ internal class GildedRoseTest {
             .map { Item(it.name, it.sellIn, 50) }
             .toTypedArray()
 
-        val app = GildedRose(itemsThatIncreaseInValueOverTime)
+        val gildedRose = GildedRose(itemsThatIncreaseInValueOverTime)
 
-        app.updateQuality()
+        gildedRose.updateQuality()
 
-        app.items().forEach { item ->
+        gildedRose.items().forEach { item ->
             assertEquals(50, item.quality)
         }
     }
@@ -97,11 +97,11 @@ internal class GildedRoseTest {
             .map { Item(it.name, it.sellIn, 51) }
             .toTypedArray()
 
-        val app = GildedRose(legendaryItems)
+        val gildedRose = GildedRose(legendaryItems)
 
-        app.updateQuality()
+        gildedRose.updateQuality()
 
-        app.items().forEach { item ->
+        gildedRose.items().forEach { item ->
             assertEquals(51, item.quality)
         }
     }
@@ -116,11 +116,11 @@ internal class GildedRoseTest {
             .map { Item(it.name, sellIn = 11, 10) }
             .toTypedArray()
 
-        val app = GildedRose(concertTicketItems)
+        val gildedRose = GildedRose(concertTicketItems)
 
-        app.updateQuality()
+        gildedRose.updateQuality()
 
-        assertTrue(app.items().all { actualItem ->
+        assertTrue(gildedRose.items().all { actualItem ->
             actualItem.quality == 11
         })
     }
@@ -133,11 +133,11 @@ internal class GildedRoseTest {
                 .map { Item(it.name, sellIn = sellIn, 10) }
                 .toTypedArray()
 
-            val app = GildedRose(concertTicketItems)
+            val gildedRose = GildedRose(concertTicketItems)
 
-            app.updateQuality()
+            gildedRose.updateQuality()
 
-            assertTrue(app.items().all { actualItem ->
+            assertTrue(gildedRose.items().all { actualItem ->
                 actualItem.quality == 12
             })
         }
@@ -151,11 +151,11 @@ internal class GildedRoseTest {
                 .map { Item(it.name, sellIn = sellIn, 10) }
                 .toTypedArray()
 
-            val app = GildedRose(concertTicketItems)
+            val gildedRose = GildedRose(concertTicketItems)
 
-            app.updateQuality()
+            gildedRose.updateQuality()
 
-            assertTrue(app.items().all { actualItem ->
+            assertTrue(gildedRose.items().all { actualItem ->
                 actualItem.quality == 13
             })
         }
@@ -168,11 +168,11 @@ internal class GildedRoseTest {
             .map { Item(it.name, sellIn = 0, 10) }
             .toTypedArray()
 
-        val app = GildedRose(concertTicketItems)
+        val gildedRose = GildedRose(concertTicketItems)
 
-        app.updateQuality()
+        gildedRose.updateQuality()
 
-        assertTrue(app.items().all { actualItem ->
+        assertTrue(gildedRose.items().all { actualItem ->
             actualItem.quality == 0
         })
     }
