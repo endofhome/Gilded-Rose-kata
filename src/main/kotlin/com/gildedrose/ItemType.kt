@@ -23,11 +23,11 @@ object ConcertTicketItemType : ItemType(
 )
 
 fun itemTypeFor(itemName: String): ItemType {
-    val (qualityDegradationFactor, itemNameWithoutPrefix) =
-        if (itemName.startsWith("Conjured ")) {
-            Pair(ConjuredQualityDegradationFactor, itemName.substringAfter("Conjured "))
+    val (itemNameWithoutPrefix, qualityDegradationFactor) =
+        if (itemName.startsWith(conjuredPrefix)) {
+            Pair(itemName.substringAfter(conjuredPrefix), ConjuredQualityDegradationFactor)
         } else {
-            Pair(DefaultQualityDegradationFactor, itemName)
+            Pair(itemName, DefaultQualityDegradationFactor)
         }
 
     return when (itemNameWithoutPrefix) {
@@ -37,3 +37,5 @@ fun itemTypeFor(itemName: String): ItemType {
         else                                        -> DefaultItemType(qualityDegradationFactor)
     }
 }
+
+private const val conjuredPrefix = "Conjured "
