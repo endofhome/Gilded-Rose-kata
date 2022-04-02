@@ -1,5 +1,7 @@
 package com.gildedrose
 
+import com.gildedrose.item.SelfUpdatingItem
+
 class GildedRose(items: Array<Item>) {
     private val selfUpdatingItems = items.map { SelfUpdatingItem(it) }.toMutableList()
 

@@ -1,4 +1,16 @@
-package com.gildedrose
+package com.gildedrose.item
+
+import com.gildedrose.updatestrategy.QualityUpdateStrategy
+import com.gildedrose.updatestrategy.SellInUpdateStrategy
+import com.gildedrose.updatestrategy.QualityDegradationFactor
+import com.gildedrose.updatestrategy.DefaultQualityUpdateStrategy
+import com.gildedrose.updatestrategy.DefaultSellInUpdateStrategy
+import com.gildedrose.updatestrategy.IncreasingSteadilyOverTimeQualityUpdateStrategy
+import com.gildedrose.updatestrategy.LegendaryQualityUpdateStrategy
+import com.gildedrose.updatestrategy.LegendarySellInUpdateStrategy
+import com.gildedrose.updatestrategy.ConcertTicketQualityUpdateStrategy
+import com.gildedrose.updatestrategy.ConjuredQualityDegradationFactor
+import com.gildedrose.updatestrategy.DefaultQualityDegradationFactor
 
 sealed class ItemType(val qualityUpdateStrategy: QualityUpdateStrategy, val sellInUpdateStrategy: SellInUpdateStrategy)
 

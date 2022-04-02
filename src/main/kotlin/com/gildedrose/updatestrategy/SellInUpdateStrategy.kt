@@ -1,4 +1,6 @@
-package com.gildedrose
+package com.gildedrose.updatestrategy
+
+import com.gildedrose.Item
 
 sealed interface SellInUpdateStrategy {
     fun newSellIn(item: Item): Int

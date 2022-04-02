@@ -1,4 +1,6 @@
-package com.gildedrose
+package com.gildedrose.item
+
+import com.gildedrose.Item
 
 class SelfUpdatingItem(private val item: Item) {
     val underlyingItem = Item(item.name, item.sellIn, item.quality)

@@ -1,5 +1,9 @@
 package com.gildedrose
 
+import com.gildedrose.item.ConcertTicketItemType
+import com.gildedrose.item.LegendaryItemType
+import com.gildedrose.item.itemTypeFor
+import com.gildedrose.updatestrategy.IncreasingOverTimeQualityUpdateStrategy
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
