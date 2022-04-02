@@ -179,7 +179,7 @@ internal class GildedRoseTest {
     }
 
     private fun Item.isConcertTicket() =
-            itemTypeFor(name) is ConcertTicketItemType
+        itemTypeFor(name) is ConcertTicketItemType
 }
 
 

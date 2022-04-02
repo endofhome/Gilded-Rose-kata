@@ -23,13 +23,11 @@ object ConcertTicketItemType : ItemType(
 )
 
 fun itemTypeFor(itemName: String): ItemType {
-    // TODO the prefix is an empty string when present, which is a bit odd. Is there a better way to express this.
-    val prefixAndItem = itemName.split("Conjured").map { it.trim() }
     val (qualityDegradationFactor, itemNameWithoutPrefix) =
-        // TODO join non-prefixed items to string, don't take the first. Needs a test.
-        when {
-            prefixAndItem.size == 2 && prefixAndItem.first().isEmpty() -> Pair(ConjuredQualityDegradationFactor, prefixAndItem[1])
-            else                                                       -> Pair(DefaultQualityDegradationFactor, prefixAndItem[0])
+        if (itemName.startsWith("Conjured ")) {
+            Pair(ConjuredQualityDegradationFactor, itemName.substringAfter("Conjured "))
+        } else {
+            Pair(DefaultQualityDegradationFactor, itemName)
         }
 
     return when (itemNameWithoutPrefix) {
