@@ -37,7 +37,6 @@ internal class GildedRoseTest {
     fun `number of days to sell item reduces appropriately when updating quality`(item: Item) {
         val items = arrayOf(item)
         val app = GildedRose(items)
-        // TODO The system behaviour would be more visible if each branch is extracted to its own test.
         val expectedSellIn =
             when {
                 item.isLegendary() -> item.sellIn
@@ -56,7 +55,7 @@ internal class GildedRoseTest {
     fun `item quality is adjusted appropriately when updating quality`(item: Item) {
         val items = arrayOf(item)
         val app = GildedRose(items)
-        // TODO The system behaviour would be more visible if each branch is extracted to its own test.
+
         val expectedQuality = when {
             item.name.startsWith("Conjured")        -> item.quality - 2
             item.isLegendary()                             -> item.quality
