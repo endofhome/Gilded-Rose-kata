@@ -19,12 +19,12 @@ object IncreasingSteadilyOverTimeQualityUpdateStrategy : IncreasingOverTimeQuali
 
 object ConcertTicketQualityUpdateStrategy : IncreasingOverTimeQualityUpdateStrategy {
     override fun newQuality(item: Item): Int =
-            when (item.sellIn) {
-                in 6..10 -> increaseUpToDefaultMaxQuality(item.quality + 2)
-                in 1..5  -> increaseUpToDefaultMaxQuality( item.quality + 3)
-                0        -> 0
-                else     -> increaseUpToDefaultMaxQuality(item.quality + 1)
-            }
+        when (item.sellIn) {
+            in 6..10 -> increaseUpToDefaultMaxQuality(item.quality + 2)
+            in 1..5  -> increaseUpToDefaultMaxQuality( item.quality + 3)
+            0        -> 0
+            else     -> increaseUpToDefaultMaxQuality(item.quality + 1)
+        }
 }
 
 sealed interface QualityDegradationFactor {
