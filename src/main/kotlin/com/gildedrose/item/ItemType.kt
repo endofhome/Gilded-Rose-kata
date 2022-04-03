@@ -12,7 +12,10 @@ import com.gildedrose.updatestrategy.ConcertTicketQualityUpdateStrategy
 import com.gildedrose.updatestrategy.ConjuredQualityDegradationFactor
 import com.gildedrose.updatestrategy.DefaultQualityDegradationFactor
 
-sealed class ItemType(val qualityUpdateStrategy: QualityUpdateStrategy, val sellInUpdateStrategy: SellInUpdateStrategy)
+sealed class ItemType(
+    val qualityUpdateStrategy: QualityUpdateStrategy,
+    val sellInUpdateStrategy: SellInUpdateStrategy
+)
 
 data class DefaultItemType(private val qualityDegradationFactor: QualityDegradationFactor) : ItemType(
     qualityUpdateStrategy = DefaultQualityUpdateStrategy(qualityDegradationFactor),
